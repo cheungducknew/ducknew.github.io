@@ -1,0 +1,11 @@
+# welcome to : www.ducknew.cf
+User-agent: *
+Allow: /
+Allow: /archives/
+Allow: /categories/
+Allow: /tags/
+Allow: /about/
+
+Disallow: /links/
+
+Sitemap: http://ducknew.cf/sitemap.xml

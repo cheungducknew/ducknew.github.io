@@ -1,0 +1,1511 @@
+﻿<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-new.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-new.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="NLP," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="关键词提取算法 TF-IDF算法  算法原理 ​    TF-IDF（Term Frequency&#x2F;Inverse Document Frequency），即词频-逆文档频率算法，用以评估一字词对于一个文件集或一个语料库中的其中一份文件的重要程度。字词的重要性随着它在文件中出现的次数成正比增加，但同时会随着它在语料库中出现的频率成反比下降。相关公式如下: $TF_{W,D_i} &#x3D; \frac{c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="社交网络分析">
+<meta property="og:url" content="http://ducknew.cf/posts/cc78cef3/index.html">
+<meta property="og:site_name" content="ducknew &#39;s blog">
+<meta property="og:description" content="关键词提取算法 TF-IDF算法  算法原理 ​    TF-IDF（Term Frequency&#x2F;Inverse Document Frequency），即词频-逆文档频率算法，用以评估一字词对于一个文件集或一个语料库中的其中一份文件的重要程度。字词的重要性随着它在文件中出现的次数成正比增加，但同时会随着它在语料库中出现的频率成反比下降。相关公式如下: $TF_{W,D_i} &#x3D; \frac{c">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/cheungducknew/cdn@latest/img/2021.9/0902-1.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/cheungducknew/cdn@latest/img/2021.9/0902-2.png">
+<meta property="article:published_time" content="2021-09-02T02:01:25.594Z">
+<meta property="article:modified_time" content="2021-09-09T02:25:52.438Z">
+<meta property="article:author" content="cheungducknew">
+<meta property="article:tag" content="NLP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/cheungducknew/cdn@latest/img/2021.9/0902-1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://ducknew.cf/posts/cc78cef3/"/>
+
+
+
+
+
+  <title>社交网络分析 | ducknew 's blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ducknew 's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">cs大三在读</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-fa fa-link"></i> <br />
+            
+            友链
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ducknew.cf/posts/cc78cef3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cheungducknew">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/sword.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ducknew 's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">社交网络分析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-09-02T10:01:25+08:00">
+                2021-09-02
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2021-09-09T10:25:52+08:00">
+                2021-09-09
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/posts/cc78cef3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/posts/cc78cef3/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.9k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  9
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="关键词提取算法"><a href="#关键词提取算法" class="headerlink" title="关键词提取算法"></a>关键词提取算法</h1><ol>
+<li><p><strong>TF-IDF算法</strong></p>
+<ol>
+<li><p><strong>算法原理</strong></p>
+<p>​    TF-IDF（Term Frequency/Inverse Document Frequency），即词频-逆文档频率算法，用以评估一字词对于一个文件集或一个语料库中的其中一份文件的重要程度。字词的重要性随着它在文件中出现的次数成正比增加，但同时会随着它在语料库中出现的频率成反比下降。相关公式如下:</p>
+<p>$TF_{W,D_i} = \frac{count(W)}{|D_i|}$</p>
+<p>$IDF_W = \log \frac{N}{1 + \sum_{i=1}^N I(W,D_i)}$</p>
+<p>$TF - IDF_{W,D_i} = TF_{W,D_i} \times IDF_W$</p>
+<p>其中count(w)为关键词w的出现次数，|Di|为文档Di中所有词的数量，N为所有的文档总数，I(w,Di)表示文档Di是否包含关键词。</p>
+</li>
+<li><p><strong>核心代码</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">1.	def get_keywords(text):  </span><br><span class="line">2.	    # 统计词频  </span><br><span class="line">3.	    cnt &#x3D; defaultdict(int)  </span><br><span class="line">4.	    for line in text:  </span><br><span class="line">5.	        for i in line:  </span><br><span class="line">6.	            cnt[i] +&#x3D; 1  </span><br><span class="line">7.	  </span><br><span class="line">8.	    # 计算TF  </span><br><span class="line">9.	    tf &#x3D; &#123;&#125;  </span><br><span class="line">10.	    for i in cnt:  </span><br><span class="line">11.	        tf[i] &#x3D; cnt[i] &#x2F; sum(cnt.values())  </span><br><span class="line">12.	  </span><br><span class="line">13.	    # 计算IDF  </span><br><span class="line">14.	    idf &#x3D; &#123;&#125;  </span><br><span class="line">15.	    paragraph &#x3D; defaultdict(int)  # 存储包含该词的段落数  </span><br><span class="line">16.	    for i in cnt:  </span><br><span class="line">17.	        for j in text:  </span><br><span class="line">18.	            if i in j:  </span><br><span class="line">19.	                paragraph[i] +&#x3D; 1  </span><br><span class="line">20.	  </span><br><span class="line">21.	    n &#x3D; len(text)  </span><br><span class="line">22.	    for i in cnt:  </span><br><span class="line">23.	        idf[i] &#x3D; math.log(n &#x2F; (paragraph[i] + 1))  </span><br><span class="line">24.	  </span><br><span class="line">25.	    # 计算每个词的TF*IDF的值  </span><br><span class="line">26.	    tf_idf &#x3D; &#123;&#125;  </span><br><span class="line">27.	    for i in cnt:  </span><br><span class="line">28.	        tf_idf[i] &#x3D; tf[i] * idf[i]  </span><br><span class="line">29.	  </span><br><span class="line">30.	    # 字典按值降序  </span><br><span class="line">31.	    res &#x3D; sorted(tf_idf.items(), key&#x3D;lambda x:x[1], reverse&#x3D;True)# 利用 lambda 表达式取字典的值  </span><br><span class="line">32.	    return res</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+</li>
+</ol>
+<ol start="2">
+<li><p><strong>TextRank算法</strong></p>
+<blockquote>
+<p>由于TF-IDF算法需要事先准备语料库，不具备普遍性，因此我们可以选用更简洁有效的TextRank算法来做关键词提取。</p>
+</blockquote>
+<ol>
+<li><p><strong>算法原理</strong></p>
+<p>TextRank 算法基于图的排序算法，其基本思想来源于PageRank算法, 通过把文本分割成若干组成单元(单词、句子)并建立图模型,仅利用单篇文档本身的信息即可实现关键词提取。计算公式如下：</p>
+</li>
+</ol>
+<p>$WS(V_i) = (1-d) + d\times \sum_{V_j \in In(V_i)} \frac{W_{j i}}{\sum_{V_k \in Out(V_j)} W_{jk}} WS(V_j)$</p>
+</li>
+</ol>
+<pre><code>其中WS(Vi)表示单元Vi的权重，d为阻尼系数，一般取0.85，Wji表示单元j和单元i的相似度，右侧求和表示每个相邻单元对当前单元的贡献程度，可以粗略认为小文本中的每个单元都是相邻的。</code></pre><ol start="2">
+<li><p><strong>核心代码</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><span class="line">1.	import numpy as np  </span><br><span class="line">2.	import jieba  </span><br><span class="line">3.	import jieba.posseg as pseg  </span><br><span class="line">4.	import csv  </span><br><span class="line">5.	  </span><br><span class="line">6.	  </span><br><span class="line">7.	class TextRank(object):  </span><br><span class="line">8.	    def __init__(self, sentence, window&#x3D;5, d&#x3D;0.85, iternum&#x3D;1000):  </span><br><span class="line">9.	        &quot;&quot;&quot;  </span><br><span class="line">10.	        :param sentence: 提供的文本  </span><br><span class="line">11.	        :param window: 窗口大小，这里取5  </span><br><span class="line">12.	        :param d: 阻尼系数，一般取0.85  </span><br><span class="line">13.	        :param iternum: 迭代次数,可以取1000  </span><br><span class="line">14.	        &quot;&quot;&quot;  </span><br><span class="line">15.	        self.sentence &#x3D; sentence  </span><br><span class="line">16.	        self.window &#x3D; window  </span><br><span class="line">17.	        self.d &#x3D; d  </span><br><span class="line">18.	        self.iternum &#x3D; iternum  </span><br><span class="line">19.	        self.edge &#x3D; &#123;&#125;  # 记录节点的边  </span><br><span class="line">20.	  </span><br><span class="line">21.	        # 分词  </span><br><span class="line">22.	        jieba.load_userdict(&#39;user_dict.txt&#39;) # 加载自定义字典  </span><br><span class="line">23.	        self.word_list &#x3D; [s.word for s in pseg.cut(self.sentence) if len(s.word)&gt;&#x3D;2 and s.flag in [&#39;n&#39;,&#39;nr&#39;,&#39;ns&#39;,&#39;nt&#39;,&#39;nz&#39;]] # n为名词  </span><br><span class="line">24.	        self.size &#x3D; len(self.word_list)  </span><br><span class="line">25.	        self.set_size &#x3D; len(set(self.word_list))  </span><br><span class="line">26.	        # print(self.word_list)  </span><br><span class="line">27.	  </span><br><span class="line">28.	        #处理过程  </span><br><span class="line">29.	        self.getNodes()  </span><br><span class="line">30.	        self.getMatrix()  </span><br><span class="line">31.	        self.getW()  </span><br><span class="line">32.	  </span><br><span class="line">33.	        #输出结果  </span><br><span class="line">34.	        # self.show()  </span><br><span class="line">35.	  </span><br><span class="line">36.	  </span><br><span class="line">37.	  </span><br><span class="line">38.	    # 构建相邻节点,返回边集  </span><br><span class="line">39.	    def getNodes(self):  </span><br><span class="line">40.	        tmp_list &#x3D; []  </span><br><span class="line">41.	        for idx, word in enumerate(self.word_list):  </span><br><span class="line">42.	            if word not in self.edge.keys():  </span><br><span class="line">43.	                tmp_list.append(word)  </span><br><span class="line">44.	                tmp_set &#x3D; set()  </span><br><span class="line">45.	                low &#x3D; idx - self.window + 1  if idx - self.window + 1&gt;&#x3D;0 else 0 # 下边界  </span><br><span class="line">46.	                high &#x3D; idx + self.window if idx + self.window&lt;self.size else self.size    # 上边界  </span><br><span class="line">47.	                for i in range(low, high):  </span><br><span class="line">48.	                    if i !&#x3D; idx:  </span><br><span class="line">49.	                        tmp_set.add(self.word_list[i])  #添加窗口内相邻节点  </span><br><span class="line">50.	                self.edge[word] &#x3D; tmp_set  </span><br><span class="line">51.	  </span><br><span class="line">52.	    # 构建矩阵  </span><br><span class="line">53.	    def getMatrix(self):  </span><br><span class="line">54.	        self.matrix &#x3D; np.zeros([self.set_size, self.set_size])    #初始化矩阵  </span><br><span class="line">55.	        self.word_idx &#x3D; &#123;&#125;  # 记录词的下标  </span><br><span class="line">56.	        self.idx_word &#x3D; &#123;&#125;  # 记录下标对应的词  </span><br><span class="line">57.	  </span><br><span class="line">58.	        for i, v in enumerate(set(self.word_list)):  </span><br><span class="line">59.	            self.word_idx[v] &#x3D; i  </span><br><span class="line">60.	            self.idx_word[i] &#x3D; v  </span><br><span class="line">61.	        for key in self.edge.keys():  </span><br><span class="line">62.	            for w in self.edge[key]:  </span><br><span class="line">63.	                self.matrix[self.word_idx[key]][self.word_idx[w]] &#x3D; 1  </span><br><span class="line">64.	                self.matrix[self.word_idx[w]][self.word_idx[key]] &#x3D; 1  </span><br><span class="line">65.	        # 归一化  </span><br><span class="line">66.	        for j in range(self.matrix.shape[1]):  </span><br><span class="line">67.	            sum &#x3D; 0  </span><br><span class="line">68.	            for i in range(self.matrix.shape[0]):  </span><br><span class="line">69.	                sum +&#x3D; self.matrix[i][j]  </span><br><span class="line">70.	            for i in range(self.matrix.shape[0]):  </span><br><span class="line">71.	                self.matrix[i][j] &#x2F;&#x3D; sum  </span><br><span class="line">72.	  </span><br><span class="line">73.	    # 迭代，计算权重  </span><br><span class="line">74.	    def getW(self):  </span><br><span class="line">75.	        self.W &#x3D; np.ones([self.set_size, 1])  </span><br><span class="line">76.	        for i in range(self.iternum):  </span><br><span class="line">77.	            self.W &#x3D; (1 - self.d) + self.d * np.dot(self.matrix, self.W)  </span><br><span class="line">78.	  </span><br><span class="line">79.	    # 输出结果  </span><br><span class="line">80.	    def show(self):  </span><br><span class="line">81.	        res &#x3D; &#123;&#125;  </span><br><span class="line">82.	        for i in range(len(self.W)):  </span><br><span class="line">83.	            res[self.idx_word[i]] &#x3D; self.W[i][0]  </span><br><span class="line">84.	        res&#x3D;sorted(res.items(), key&#x3D;lambda x: x[1], reverse&#x3D;True)  </span><br><span class="line">85.	        # print(res)  </span><br><span class="line">86.	        with open(&#39;斗破苍穹.csv&#39;,&#39;w&#39;,encoding&#x3D;&#39;utf-8&#39;) as f:  </span><br><span class="line">87.	            csv_writer &#x3D; csv.writer(f)  </span><br><span class="line">88.	            csv_writer.writerow([&quot;姓名&quot;, &quot;权重&quot;])  </span><br><span class="line">89.	            for name,w in res:  </span><br><span class="line">90.	                csv_writer.writerow([name, w])  </span><br><span class="line">91.	  </span><br><span class="line">92.	  </span><br><span class="line">93.	  </span><br><span class="line">94.	if __name__ &#x3D;&#x3D; &#39;__main__&#39;:  </span><br><span class="line">95.	    filename&#x3D;&#39;斗破苍穹.txt&#39;  </span><br><span class="line">96.	    with open(filename, &#39;r&#39;, encoding&#x3D;&#39;utf-8&#39;)as f:  </span><br><span class="line">97.	        text &#x3D; f.read()  </span><br><span class="line">98.	        tr &#x3D; TextRank(text)  </span><br><span class="line">99.	        tr.show()</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+</li>
+</ol>
+<h1 id="社交网络分析"><a href="#社交网络分析" class="headerlink" title="社交网络分析"></a>社交网络分析</h1><blockquote>
+<ul>
+<li>通过jieba分词，结合自定义词典得到人名；</li>
+<li>构建共现矩阵统计每一段中共现的人物，通过字典保存</li>
+</ul>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">1.	def social_contact(file_name):  </span><br><span class="line">2.	    names &#x3D; &#123;&#125;  # 人物出现次数  </span><br><span class="line">3.	    relationships &#x3D; &#123;&#125;  # 关系字典  </span><br><span class="line">4.	    lineNames &#x3D; []  # 每段内人物  </span><br><span class="line">5.	    jieba.load_userdict(&quot;character.txt&quot;)  </span><br><span class="line">6.	    with codecs.open(file_name, &quot;r&quot;, &quot;utf-8&quot;) as f:  </span><br><span class="line">7.	        for line in f.readlines():  </span><br><span class="line">8.	            poss &#x3D; posseg.cut(line)  </span><br><span class="line">9.	            lineNames.append([])  </span><br><span class="line">10.	            for w in poss:  </span><br><span class="line">11.	                if w.flag !&#x3D; &quot;nr&quot; or len(w.word) &lt; 2:#w.flag判断词性  </span><br><span class="line">12.	                    continue  </span><br><span class="line">13.	                lineNames[-1].append(w.word)  </span><br><span class="line">14.	                if names.get(w.word) is None:  </span><br><span class="line">15.	                    names[w.word] &#x3D; 0  </span><br><span class="line">16.	                    relationships[w.word] &#x3D; &#123;&#125;  </span><br><span class="line">17.	                names[w.word] +&#x3D; 1  </span><br><span class="line">18.	  </span><br><span class="line">19.	  </span><br><span class="line">20.	  </span><br><span class="line">21.	    for line in lineNames:  </span><br><span class="line">22.	        for name1 in line:  </span><br><span class="line">23.	            for name2 in line:  </span><br><span class="line">24.	                if name1 &#x3D;&#x3D; name2:  </span><br><span class="line">25.	                    continue  </span><br><span class="line">26.	                if relationships[name1].get(name2) is None:  </span><br><span class="line">27.	                    relationships[name1][name2] &#x3D; 1         #创建关系  </span><br><span class="line">28.	                else:  </span><br><span class="line">29.	                    relationships[name1][name2] &#x3D; relationships[name1][name2] + 1  #关系提升1</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="社交网络可视化"><a href="#社交网络可视化" class="headerlink" title="社交网络可视化"></a>社交网络可视化</h1><ol>
+<li><p><strong>NetworkX库</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/cheungducknew/cdn@latest/img/2021.9/0902-1.png" alt="0902-1"></p>
+<p>具体内容可以看我写的另一篇文章<a href="http://ducknew.cf/posts/13e75cb2/">可视化之网络图</a></p>
+</li>
+<li><p><strong>Gephi软件</strong></p>
+<blockquote>
+<p>Gephi软件有着强大的可视化功能。</p>
+<p>通过导入节点表和边表，能够生成可更改的图结构图片，如下图所示</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/cheungducknew/cdn@latest/img/2021.9/0902-2.png" alt="0902-2"></p>
+<p>节点表和边表的生成，可以参考：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> codecs</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> codecs.open(<span class="string">"node.txt"</span>, <span class="string">"a+"</span>, <span class="string">"utf-8"</span>) <span class="keyword">as</span> f:</span><br><span class="line">   	f.write(<span class="string">"Id Label Weight\r\n"</span>)</span><br><span class="line">   	<span class="keyword">for</span> name, times <span class="keyword">in</span> names.items():</span><br><span class="line">   		f.write(name + <span class="string">" "</span> + name + <span class="string">" "</span> + str(times) + <span class="string">"\r\n"</span>)</span><br><span class="line"></span><br><span class="line">   <span class="keyword">with</span> codecs.open(<span class="string">"edge.txt"</span>, <span class="string">"a+"</span>, <span class="string">"utf-8"</span>) <span class="keyword">as</span> f:</span><br><span class="line">   	f.write(<span class="string">"Source Target Weight\r\n"</span>)</span><br><span class="line">   	<span class="keyword">for</span> name, edges <span class="keyword">in</span> relationships.items():</span><br><span class="line">   		<span class="keyword">for</span> v, w <span class="keyword">in</span> edges.items():</span><br><span class="line">   			<span class="keyword">if</span> w &gt; <span class="number">3</span>:</span><br><span class="line">   				f.write(name + <span class="string">" "</span> + v + <span class="string">" "</span> + str(w) + <span class="string">"\r\n"</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<p>讲个小知识，为什么使用<code>codecs</code>库？</p>
+<blockquote>
+<p>codecs包含了编码解码器的注册和其他基本的类，开发者还可以通过codecs提供的接口自定义编/解码方案</p>
+</blockquote>
+<blockquote>
+<p>通过指定codecs.open中的encoding参数，进行编码/解码方式的选择</p>
+</blockquote>
+<blockquote>
+<p>更多编码转换方案相关的信息，还可通过标准库中自带的编码库<code>encodings</code>进行查询</p>
+</blockquote>
+<p>参考信息：<a href="https://zhuanlan.zhihu.com/p/26720957" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/26720957</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">技术是无私的，非常不舍得把我这个实战代码分享了出去,希望大家能够多多支持大可，有什么问题都可以提交，我也会及时为大家解决。最后也欢迎大家光临我的小站 http:&#x2F;&#x2F;ducknew.cf&#x2F;</span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>不要打赏，只求关注呀QAQ</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/background_pic.jpg" alt="cheungducknew 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/background_pic.jpg" alt="cheungducknew 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    cheungducknew
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://ducknew.cf/posts/cc78cef3/" title="社交网络分析">http://ducknew.cf/posts/cc78cef3/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/NLP/" rel="tag"># NLP</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/d8eec3ea/" rel="next" title="Hexo之SEO优化">
+                <i class="fa fa-chevron-left"></i> Hexo之SEO优化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/13e75cb2/" rel="prev" title="可视化之网络图">
+                可视化之网络图 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/sword.png"
+                alt="cheungducknew" />
+            
+              <p class="site-author-name" itemprop="name">cheungducknew</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <!--a href="/archives/%7C%7C%20archive"-->
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/cheungducknew" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://blog.csdn.net/weixin_45825073" target="_blank" title="CSDN">
+                      
+                        <i class="fa fa-fw fa-copyright"></i>CSDN</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#关键词提取算法"><span class="nav-number">1.</span> <span class="nav-text">关键词提取算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#社交网络分析"><span class="nav-number">2.</span> <span class="nav-text">社交网络分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#社交网络可视化"><span class="nav-number">3.</span> <span class="nav-text">社交网络可视化</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        ﻿<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cheungducknew</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">39.5k</span>
+  
+</div>
+
+
+  <!-- <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>-->
+
+
+
+  <!--<span class="post-meta-divider">|</span>-->
+
+
+
+  <!--<div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>-->
+
+
+
+
+
+
+
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("05/01/2020 12:00:00");//在此处修改你的建站时间
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 "; 
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒啦"; 
+    } 
+setInterval("createtime()",250);
+</script>
+
+
+<!-- 评论框美化 -->
+<style>
+    #comments .veditor{
+        min-height: 10rem;
+        background-image: url(https://cdn.jsdelivr.net/gh/cheungducknew/cdn@latest/img/util/comments_bg.png);
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: right;
+        background-color: rgba(255,255,255,0);
+        resize: none;}
+</style>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/cheungducknew/cdn@master/js/valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: true,
+        notify: false,
+        appId: '36ULMwVwnkdXTCIBPgLdQUy2-MdYXbMMI',
+        appKey: 'TprYVYmiCLWXUIl2QaJutboW',
+        placeholder: '建议在上方留下昵称和邮箱等信息，以便收到回复通知（以下三选一）：\n1、填写昵称与QQ邮箱（系统自动获取QQ头像）\n2、自定义填写昵称、邮箱、网址信息 \n3、匿名留言（不会收到留言回复通知，不推荐）',
+        avatar:'wavatar',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+    document.body.addEventListener('click', function(e) {
+    if (e.target.classList.contains('vsubmit')) {
+        const email = document.querySelector('input[type=email]');
+        const nick = document.querySelector('input[name=nick]');
+        const reg = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+        if (!email.value || !nick.value || !reg.test(email.value)) {
+            const str = `<div class="valert txt-center"><div class="vtext">请填写正确的昵称和邮箱！</div></div>`;
+            const vmark = document.querySelector('.vmark');
+            vmark.innerHTML = str;
+            vmark.style.display = 'block';
+
+            setTimeout(function() {
+                vmark.style.display = 'none';
+                vmark.innerHTML = '';
+            }, 2500);
+        }
+      }
+    });
+
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+
+<!--单击显示文字-->
+<script type="text/javascript" src="/js/click_show_text.js"></script>
+
+<!--动态线条背景-->
+<script type="text/javascript"
+color="220,220,220" opacity='0.7' zIndex="-2" count="200" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js">
+</script>
+
+<!--浏览器搞笑标题-->
+<script type="text/javascript" src="\js\FunnyTitle.js"></script>
+
+<!-- 雪花特效 -->
+<script type="text/javascript" src="\js\snow.js"></script>
+
+<!-- 音乐播放器 -->
+<link rel="stylesheet" href="/dist/APlayer.min.css">
+<div id="aplayer"></div>
+<script type="text/javascript" src="/dist/APlayer.min.js"></script>
+<script type="text/javascript" src="/dist/music.js"></script>
+
+
+
